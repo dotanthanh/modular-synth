@@ -21,67 +21,93 @@
 #include "Module.hpp"
 #include "Audio.cpp"
 #include "WaveFile.cpp"
+#include "Engine.cpp"
 
-const float SRATE = 44100.f;
-const float SAMPLE_TIME = 1.f / SRATE;
+const float SAMPLE_RATE = 44100.f;
+const float SAMPLE_TIME = 1.f / SAMPLE_RATE;
 
 Module::Module() {};
 Module::~Module() {};
 
 int main(int argc, const char * argv[]) {
-    std::vector<Module*> modules;
-    std::vector<Cable*> cables;
+//     std::vector<Module*> modules;
+//     std::vector<Cable*> cables;
 
-    // test patch: VCO -> VCA
-    VCO* vco = new VCO();
-    VCA* vca = new VCA();
-    Cable* cable = new Cable();
-    cable->inputId = VCO::SINE;
-    cable->outputId = VCA::IN_1;
-    cable->inputModule = vco;
-    cable->outputModule = vca;
+//     // test patch: VCO -> VCA
+//     VCO* vco = new VCO();
+//     VCA* vca = new VCA();
+//     Cable* cable = new Cable();
+//     cable->inputId = VCO::SINE;
+//     cable->outputId = VCA::IN_1;
+//     cable->inputModule = vco;
+//     cable->outputModule = vca;
 
-    modules.push_back(vco);
-    modules.push_back(vca);
-    cables.push_back(cable);
+//     modules.push_back(vco);
+//     modules.push_back(vca);
+//     cables.push_back(cable);
 
-    ProcessArgs args;
-    args.sampleRate = SRATE;
-    args.sampleTime = SAMPLE_TIME;
-    WaveFile<int32_t> f ("/Users/thdo/Downloads/test.wav", 2, 44100, 32);
+//     ProcessArgs args;
+//     args.sampleRate = SRATE;
+//     args.sampleTime = SAMPLE_TIME;
+//     WaveFile<int32_t> f ("/Users/thdo/Downloads/test.wav", 2, 44100, 32);
 
-    auto curTime = std::chrono::high_resolution_clock::now();
-    auto lastTime = curTime;
-    double overheadTime;
+//     auto curTime = std::chrono::high_resolution_clock::now();
+//     auto lastTime = curTime;
+//     double overheadTime;
 
-    // this is for printing to file (so we can plot and test)
-    float x;
-    auto firstTime = curTime;
-    float duration;
-    while (true) {
-        for (Cable* c : cables) {
-            c->step();
-        }
-        for (Module* m : modules) {
-            m->process(args);
-        }
-        x = vca->outputs[VCA::OUT_1];
+//     // this is for printing to file (so we can plot and test)
+//     float x;
+//     auto firstTime = curTime;
+//     float duration;
+//     while (true) {
+//         for (Cable* c : cables) {
+//             c->step();
+//         }
+//         for (Module* m : modules) {
+//             m->process(args);
+//         }
+//         x = vca->outputs[VCA::OUT_1];
 
-        f.writeData((int32_t) (x * 1000000000));
+//         f.writeData((int32_t) (x * 1000000000));
 
-        curTime = std::chrono::high_resolution_clock::now();
-        duration = std::chrono::duration<double>(curTime - firstTime).count();
-//        myfile << x << " " << duration << " " << overheadTime << std::endl;
+//         curTime = std::chrono::high_resolution_clock::now();
+//         duration = std::chrono::duration<double>(curTime - firstTime).count();
+// //        myfile << x << " " << duration << " " << overheadTime << std::endl;
         
-        if (duration >= 3) {
-            break;
-        }
-        std::cout << std::endl;
-        overheadTime = std::chrono::duration<double>(curTime - lastTime).count();
-        lastTime = curTime;
-        std::this_thread::sleep_for(std::chrono::duration<double>(SAMPLE_TIME - overheadTime));
+//         if (duration >= 3) {
+//             break;
+//         }
+//         std::cout << std::endl;
+//         overheadTime = std::chrono::duration<double>(curTime - lastTime).count();
+//         lastTime = curTime;
+//         std::this_thread::sleep_for(std::chrono::duration<double>(SAMPLE_TIME - overheadTime));
+//     }
+//     f.finishWrite();
+//     std::cout << f.numOfSamples << std::endl;
+    Engine* engine = new Engine();
+    engine->internal->sampleRate = SAMPLE_RATE;
+    engine->internal->sampleTime = SAMPLE_TIME;
+
+    VCO* vco = new VCO();
+    VCA* vca = new VCA();    
+    engine->addModule(vco);
+    engine->addModule(vca);
+    Cable* cable = new Cable();
+    cable->setInputModule(vco, VCO::SINE);
+    cable->setOutputModule(vca, VCA::IN_1);
+    engine->addCable(cable);
+
+    // add 10 more VCA next to each other
+    for (int i = 1; i < 10; i++) {
+       VCA* nextVCA = new VCA();
+       engine->addModule(nextVCA);
+       Cable* c = new Cable();
+       c->setInputModule(engine->internal->modules[i], VCA::OUT_1);
+       c->setOutputModule(engine->internal->modules[i + 1], VCA::IN_1);
+       engine->addCable(c);
     }
-    f.finishWrite();
-    std::cout << f.numOfSamples << std::endl;
+
+    engine->run();
+
     return 0;
 }

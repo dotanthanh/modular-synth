@@ -13,6 +13,7 @@
 		F8B315CF234A5D6D0024DA27 /* libSDL2-2.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F8B315CE234A5D6D0024DA27 /* libSDL2-2.0.0.dylib */; };
 		F8B315D1234A5E760024DA27 /* Audio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F8B315D0234A5E760024DA27 /* Audio.cpp */; };
 		F8B315D32351F3C70024DA27 /* WaveFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F8B315D22351F3C70024DA27 /* WaveFile.cpp */; };
+		F8B315D5235B0CB00024DA27 /* Engine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F8B315D4235B0CB00024DA27 /* Engine.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -39,6 +40,7 @@
 		F8B315CE234A5D6D0024DA27 /* libSDL2-2.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libSDL2-2.0.0.dylib"; path = "../../../../usr/local/Cellar/sdl2/2.0.10/lib/libSDL2-2.0.0.dylib"; sourceTree = "<group>"; };
 		F8B315D0234A5E760024DA27 /* Audio.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Audio.cpp; sourceTree = "<group>"; };
 		F8B315D22351F3C70024DA27 /* WaveFile.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = WaveFile.cpp; sourceTree = "<group>"; };
+		F8B315D4235B0CB00024DA27 /* Engine.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Engine.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +83,7 @@
 				F8B315C1234A10760024DA27 /* Module.hpp */,
 				F8B315C4234A12CB0024DA27 /* Cable.hpp */,
 				F8B315C6234A14350024DA27 /* VCO.cpp */,
+				F8B315D4235B0CB00024DA27 /* Engine.cpp */,
 			);
 			path = "modular-synth";
 			sourceTree = "<group>";
@@ -151,6 +154,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F8B315D32351F3C70024DA27 /* WaveFile.cpp in Sources */,
+				F8B315D5235B0CB00024DA27 /* Engine.cpp in Sources */,
 				F8B315D1234A5E760024DA27 /* Audio.cpp in Sources */,
 				F8B315CA234A1AD00024DA27 /* VCA.cpp in Sources */,
 				F8B315C8234A14350024DA27 /* VCO.cpp in Sources */,

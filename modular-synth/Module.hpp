@@ -24,6 +24,7 @@ struct Module {
     std::vector<float> params;
     
     bool running = false;
+    bool bypass = false;
 
     Module();
 
