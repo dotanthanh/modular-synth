@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		F8B315B72341105B0024DA27 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F8B315B62341105B0024DA27 /* main.cpp */; };
+		F8B315C8234A14350024DA27 /* VCO.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F8B315C6234A14350024DA27 /* VCO.cpp */; };
+		F8B315CA234A1AD00024DA27 /* VCA.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F8B315C9234A1AD00024DA27 /* VCA.cpp */; };
+		F8B315CF234A5D6D0024DA27 /* libSDL2-2.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F8B315CE234A5D6D0024DA27 /* libSDL2-2.0.0.dylib */; };
+		F8B315D1234A5E760024DA27 /* Audio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F8B315D0234A5E760024DA27 /* Audio.cpp */; };
+		F8B315D32351F3C70024DA27 /* WaveFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F8B315D22351F3C70024DA27 /* WaveFile.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +30,15 @@
 /* Begin PBXFileReference section */
 		F8B315B32341105B0024DA27 /* modular-synth */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "modular-synth"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F8B315B62341105B0024DA27 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		F8B315BE2343873E0024DA27 /* RingBuffer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = RingBuffer.hpp; sourceTree = "<group>"; };
+		F8B315C1234A10760024DA27 /* Module.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Module.hpp; sourceTree = "<group>"; };
+		F8B315C4234A12CB0024DA27 /* Cable.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Cable.hpp; sourceTree = "<group>"; };
+		F8B315C6234A14350024DA27 /* VCO.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = VCO.cpp; sourceTree = "<group>"; };
+		F8B315C9234A1AD00024DA27 /* VCA.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = VCA.cpp; sourceTree = "<group>"; };
+		F8B315CC234A5D590024DA27 /* sdl2 */ = {isa = PBXFileReference; lastKnownFileType = folder; name = sdl2; path = ../../../../usr/local/Cellar/sdl2; sourceTree = "<group>"; };
+		F8B315CE234A5D6D0024DA27 /* libSDL2-2.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libSDL2-2.0.0.dylib"; path = "../../../../usr/local/Cellar/sdl2/2.0.10/lib/libSDL2-2.0.0.dylib"; sourceTree = "<group>"; };
+		F8B315D0234A5E760024DA27 /* Audio.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Audio.cpp; sourceTree = "<group>"; };
+		F8B315D22351F3C70024DA27 /* WaveFile.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = WaveFile.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,6 +46,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F8B315CF234A5D6D0024DA27 /* libSDL2-2.0.0.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -43,6 +58,7 @@
 			children = (
 				F8B315B52341105B0024DA27 /* modular-synth */,
 				F8B315B42341105B0024DA27 /* Products */,
+				F8B315CB234A5D590024DA27 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -58,8 +74,24 @@
 			isa = PBXGroup;
 			children = (
 				F8B315B62341105B0024DA27 /* main.cpp */,
+				F8B315D22351F3C70024DA27 /* WaveFile.cpp */,
+				F8B315D0234A5E760024DA27 /* Audio.cpp */,
+				F8B315C9234A1AD00024DA27 /* VCA.cpp */,
+				F8B315BE2343873E0024DA27 /* RingBuffer.hpp */,
+				F8B315C1234A10760024DA27 /* Module.hpp */,
+				F8B315C4234A12CB0024DA27 /* Cable.hpp */,
+				F8B315C6234A14350024DA27 /* VCO.cpp */,
 			);
 			path = "modular-synth";
+			sourceTree = "<group>";
+		};
+		F8B315CB234A5D590024DA27 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F8B315CE234A5D6D0024DA27 /* libSDL2-2.0.0.dylib */,
+				F8B315CC234A5D590024DA27 /* sdl2 */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -118,6 +150,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F8B315D32351F3C70024DA27 /* WaveFile.cpp in Sources */,
+				F8B315D1234A5E760024DA27 /* Audio.cpp in Sources */,
+				F8B315CA234A1AD00024DA27 /* VCA.cpp in Sources */,
+				F8B315C8234A14350024DA27 /* VCO.cpp in Sources */,
 				F8B315B72341105B0024DA27 /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -241,6 +277,11 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9YB33VPDD3;
+				"HEADER_SEARCH_PATHS[arch=*]" = /usr/local/include;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/usr/local/Cellar/sdl2/2.0.10/lib,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -250,6 +291,10 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9YB33VPDD3;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/usr/local/Cellar/sdl2/2.0.10/lib,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
