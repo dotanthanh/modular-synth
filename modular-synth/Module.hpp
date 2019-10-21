@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include <vector>
+#include <mutex>
 
 struct ProcessArgs {
     int sampleRate;
@@ -22,7 +23,8 @@ struct Module {
     std::vector<float> inputs;
     std::vector<float> outputs;
     std::vector<float> params;
-    
+    std::mutex mutex;
+
     bool running = false;
     bool bypass = false;
 

@@ -73,9 +73,10 @@ struct WaveFile {
     }
     
     ~WaveFile() {
-        if (f.is_open()) {
-            f.close();
-        }
+//        if (f.is_open()) {
+//            f.close();
+//        }
+        finishWrite();
     }
     
     void writeHeader() {

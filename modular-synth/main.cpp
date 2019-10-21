@@ -21,13 +21,145 @@
 #include "Module.hpp"
 #include "Audio.cpp"
 #include "WaveFile.cpp"
-#include "Engine.cpp"
+//#include "Engine.cpp"
 
 const float SAMPLE_RATE = 44100.f;
 const float SAMPLE_TIME = 1.f / SAMPLE_RATE;
 
 Module::Module() {};
 Module::~Module() {};
+
+WaveFile<int32_t> f ("/Users/thdo/Downloads/test.wav", 2, 44100, 32);
+
+struct Engine {
+    struct Internal;
+    Internal* internal;
+    
+    Engine();
+    
+    void addModule(Module* module);
+    
+    void addCable(Cable* cable);
+    
+    void run();
+};
+
+struct ModuleRunner {
+    int id;
+    Engine* engine;
+    std::thread thread;
+    
+    bool isRunning = false;
+    
+    void run();
+    
+    void start() {
+        thread = std::thread([&] {
+            run();
+        });
+    }
+};
+
+struct Engine::Internal {
+    std::vector<Module*> modules;
+    std::vector<Cable*> cables;
+    
+    std::vector<ModuleRunner*> moduleRunners;
+    
+    float sampleRate;
+    float sampleTime;
+    
+    int threadCount = 0;
+};
+
+Engine::Engine() {
+    internal = new Internal();
+    internal->cables.resize(0);
+    internal->modules.resize(0);
+}
+
+static void launchModuleRunners(Engine* engine) {
+    Engine::Internal* internal = engine->internal;
+    
+    if (internal->threadCount < 1) {
+        internal->threadCount = 1;
+        internal->moduleRunners.resize(internal->threadCount);
+        
+        for (int i = 0; i < internal->threadCount; i++) {
+            ModuleRunner* m = new ModuleRunner();
+            m->engine = engine;
+            m->id = i;
+            m->start();
+            internal->moduleRunners[i] = m;
+        }
+    }
+}
+
+void Engine::addModule(Module* module) {
+    internal->modules.push_back(module);
+}
+
+void Engine::addCable(Cable* cable) {
+    internal->cables.push_back(cable);
+}
+
+static void stepCable(Engine* engine) {
+    for (Cable* c: engine->internal->cables) {
+        c->step();
+    }
+}
+
+static void stepModules(Engine* engine) {
+    Engine::Internal* internal = engine->internal;
+    ProcessArgs processArgs;
+    processArgs.sampleRate = internal->sampleRate;
+    processArgs.sampleTime = internal->sampleTime;
+    
+    for (Module* module: internal->modules) {
+        std::lock_guard<std::mutex> lock(module->mutex);
+        if (!module->bypass) {
+            module->process(processArgs);
+        }
+    }
+}
+
+static void process(Engine* engine) {
+    auto curTime = std::chrono::high_resolution_clock::now();
+    auto lastTime = curTime;
+    double overheadTime;
+    
+    auto firstTime = curTime;
+    float duration;
+    float x;
+    float sampleTime = engine->internal->sampleTime;
+    
+    while (1) {
+        if (engine->internal->threadCount < 1) {
+            launchModuleRunners(engine);
+        }
+        stepCable(engine);
+        stepModules(engine);
+
+        x = engine->internal->modules[engine->internal->modules.size() - 1]->outputs[VCA::OUT_1];
+        f.writeData((int32_t) (x * 1000000000));
+
+        curTime = std::chrono::high_resolution_clock::now();
+        duration = std::chrono::duration<double>(curTime - firstTime).count();
+        
+        overheadTime = std::chrono::duration<double>(curTime - lastTime).count();
+        lastTime = curTime;
+        std::this_thread::sleep_for(std::chrono::duration<double>(sampleTime - overheadTime));
+    }
+};
+
+void Engine::run() {
+    process(this);
+}
+
+void ModuleRunner::run() {
+    stepModules(engine);
+}
+
 
 int main(int argc, const char * argv[]) {
 //     std::vector<Module*> modules;
@@ -108,6 +240,7 @@ int main(int argc, const char * argv[]) {
     }
 
     engine->run();
+    std::cout << "Running .." << std::endl;
 
     return 0;
 }
